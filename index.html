@@ -11,18 +11,62 @@
       padding: 40px;
       background: #fafafa;
     }
-    h1 { color: #d62828; }
-    form { margin-top: 20px; }
+
+    h1 { 
+      color: #d62828; 
+    }
+
+    form { 
+      margin-top: 20px; 
+    }
+
     input, button {
       margin: 10px;
       padding: 10px;
       font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
+
+    button {
+      cursor: pointer;
+      background-color: #d62828;
+      color: white;
+      border: none;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #b71c1c;
+    }
+
     img {
-      margin-top: 30px;
-      max-width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      display: block;
+      margin: 30px auto 10px auto;
+      max-width: 400px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .download-btn {
+      display: inline-block;
+      margin-top: 10px;
+      background-color: #4caf50;
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .download-btn:hover {
+      background-color: #3b8f40;
+    }
+
+    #result {
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -63,6 +107,7 @@
           result.innerHTML = `
             <h2>Your Mulletified Image:</h2>
             <img src="${imgUrl}" alt="Mulletified Image" />
+            <a class="download-btn" href="${imgUrl}" download="mulletified.png">Download Your Mullet</a>
           `;
         } catch (err) {
           console.error(err);
