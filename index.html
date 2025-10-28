@@ -47,17 +47,11 @@
       result.innerHTML = "<p>Uploading... please wait 10–20 seconds for your glorious mullet!</p>";
 
       const formData = new FormData(form);
+
       try {
         const res = await fetch("https://n8n-service-25-11-25.onrender.com/webhook/mulletify-public", {
           method: "POST",
           body: formData
         });
 
-        if (!res.ok) throw new Error("Upload failed");
-
-        const blob = await res.blob();
-        const imgUrl = URL.createObjectURL(blob);
-
-        result.innerHTML = `
-          <h2>Your Mulletified Image:</h2>
-          <img
+        if (!res.ok) throw
