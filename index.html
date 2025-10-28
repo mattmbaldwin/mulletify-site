@@ -33,7 +33,6 @@
 
   <form id="mulletForm">
     <input type="file" id="image" name="image" accept="image/*" required><br>
-    <input type="email" name="email" placeholder="Your email (optional)"><br>
     <button type="submit">Upload & Get Mullet</button>
   </form>
 
@@ -56,19 +55,9 @@
 
         if (!res.ok) throw new Error("Upload failed");
 
-        // Convert the response into a blob (image)
         const blob = await res.blob();
         const imgUrl = URL.createObjectURL(blob);
 
         result.innerHTML = `
           <h2>Your Mulletified Image:</h2>
-          <img src="${imgUrl}" alt="Mulletified Image" />
-        `;
-      } catch (err) {
-        result.innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
-      }
-    };
-  </script>
-</body>
-</html>
-Update index.html with dynamic image display
+          <img
