@@ -1,46 +1,74 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.1">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mulletify Yourself!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #fafafa;
+    }
+    h1 { color: #d62828; }
+    form { margin-top: 20px; }
+    input, button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    img {
+      margin-top: 30px;
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
+
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Mulletify Yourself!&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1 { color: #d62828; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>input, button { margin: 10px; padding: 10px; font-size: 1rem; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Get Mulletified 💇‍♂️&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;p&gt;Upload your photo and see your new mullet appear!&lt;/p&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;form id="mulletForm" enctype="multipart/form-data" method="POST"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>action="https://n8n-service-25-11-25.onrender.com/webhook/mulletify-public"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="file" name="image" accept="image/*" required&gt;&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="email" name="email" placeholder="Your email (optional)"&gt;&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button type="submit"&gt;Upload &amp; Get Mullet&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/form&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('mulletForm').onsubmit = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>alert("Uploading... please wait 10–20 seconds for your glorious mullet!");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <h1>Get Mulletified 💇‍♂️</h1>
+  <p>Upload your photo and see your new mullet appear!</p>
+
+  <form id="mulletForm">
+    <input type="file" id="image" name="image" accept="image/*" required><br>
+    <input type="email" name="email" placeholder="Your email (optional)"><br>
+    <button type="submit">Upload & Get Mullet</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById('mulletForm');
+    const result = document.getElementById('result');
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      result.innerHTML = "<p>Uploading... please wait 10–20 seconds for your glorious mullet!</p>";
+
+      const formData = new FormData(form);
+      try {
+        const res = await fetch("https://n8n-service-25-11-25.onrender.com/webhook/mulletify-public", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!res.ok) throw new Error("Upload failed");
+
+        // Convert the response into a blob (image)
+        const blob = await res.blob();
+        const imgUrl = URL.createObjectURL(blob);
+
+        result.innerHTML = `
+          <h2>Your Mulletified Image:</h2>
+          <img src="${imgUrl}" alt="Mulletified Image" />
+        `;
+      } catch (err) {
+        result.innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
+      }
+    };
+  </script>
 </body>
 </html>
+Update index.html with dynamic image display
